@@ -6,7 +6,7 @@ authors = ["Joris Conijn <joris@conijnonline.nl>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 junit-xml = "^1.9"
 click = "^8.0.3"
 

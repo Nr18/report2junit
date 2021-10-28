@@ -2,7 +2,7 @@ SHELL = /bin/bash -c
 VIRTUAL_ENV = $(shell poetry env info --path)
 export BASH_ENV=$(VIRTUAL_ENV)/bin/activate
 
-.PHONY: lint test install clean run release
+.PHONY: lint test install clean run build release tag
 
 lint: _black _mypy
 
@@ -11,7 +11,6 @@ test: lint
 
 install: $(VIRTUAL_ENV)
 	poetry install
-	pre-commit install
 
 clean:
 	[[ -d "$(VIRTUAL_ENV)" ]] && rm -rf "$(VIRTUAL_ENV)" || true
@@ -26,8 +25,10 @@ run:
 	report2junit --source-type cfn-guard ./sample-reports/cfn-guard.json
 	report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json
 
-release:
+build:
 	python setup.py sdist
+
+release: build
 	twine upload dist/*
 
 .PHONY: _black _mypy
@@ -39,7 +40,5 @@ _black:
 _mypy:
 	$(info [*] Python static type checker...)
 	mypy --junit-xml reports/typecheck.xml report2junit
-#--cobertura-xml-report reports
-# --html-report reports
 
 $(VERBOSE).SILENT:
