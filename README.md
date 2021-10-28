@@ -1,6 +1,7 @@
 # Report 2 JUnit
 
 [![Continuous Integration](https://github.com/Nr18/report2junit/actions/workflows/ci.yml/badge.svg)](https://github.com/Nr18/report2junit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/Nr18/report2junit/branch/main/graph/badge.svg?token=RMPJ8DBMKZ)](https://codecov.io/gh/Nr18/report2junit)
 
 
 `report2junit` is a tool that converts various reports into the JUnit format.
