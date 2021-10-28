@@ -26,7 +26,7 @@ run:
 	report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json
 
 build:
-	python setup.py sdist
+	python -m build --sdist --wheel --outdir dist/
 
 release: build
 	twine upload dist/*
