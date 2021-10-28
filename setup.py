@@ -18,8 +18,8 @@ setuptools.setup(
     author="Joris Conijn",
     author_email="joris@conijnonline.nl",
     url="https://github.com/Nr18/report2junit",
-    package_dir={"": "report2junit"},
-    packages=setuptools.find_packages(where="report2junit"),
+    package_dir={"": "."},
+    packages=setuptools.find_packages(where="."),
     install_requires=[
         "click==8.0.3",
         "junit-xml==1.9",
