@@ -47,8 +47,10 @@ report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json ./sample-report
 
 ## Releases
 
- First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file. Then you need to create a
- new release. You can do this by creating a tag and push it to the remote:
+First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file. Next you need to merge the
+change to the `main` branch using a pull request.
+
+Then you need to create a new release. You can do this by creating a tag and push it to the remote:
 
  ```bash
  git tag v$(awk '/version/{print $NF}'  pyproject.toml | sed 's/\"//g')

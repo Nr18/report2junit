@@ -45,3 +45,8 @@ jobs:
           asset_path: ./dist/report2junit-${{ steps.vars.outputs.version }}.tar.gz
           asset_name: report2junit-${{ steps.vars.outputs.version }}.tar.gz
           asset_content_type: application/tar+gzip
+      - name: Publish a Python distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: Nr18
+          password: ${{ secrets.PYPI_API_TOKEN }}
