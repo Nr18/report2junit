@@ -44,3 +44,15 @@ report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json
 # Or if you want to specify the destination:
 report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json ./sample-reports/cfn-nag-other-destination.xml
 ```
+
+## Releases
+
+ First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file. Then you need to create a
+ new release. You can do this by creating a tag and push it to the remote:
+
+ ```bash
+ git tag v$(awk '/version/{print $NF}'  pyproject.toml | sed 's/\"//g')
+ git push --tags
+ ```
+
+ This will trigger the GitHub Actions [`release`](.github/workflows/release.yml) workflow.
