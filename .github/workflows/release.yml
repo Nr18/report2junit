@@ -2,7 +2,7 @@ name: Create Release
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   build:
@@ -32,7 +32,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ steps.vars.outputs.version }}
+          release_name: Release v${{ steps.vars.outputs.version }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
