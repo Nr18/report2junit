@@ -1,0 +1,21 @@
+[
+  {
+    "filename": "template.json",
+    "file_results": {
+      "failure_count": 0,
+      "violations": [
+        {
+          "id": "W1",
+          "type": "WARN",
+          "message": "S3 Bucket should have access logging configured",
+          "logical_resource_ids": [
+            "MyBucket"
+          ],
+          "line_numbers": [
+            125
+          ]
+        }
+      ]
+    }
+  }
+]

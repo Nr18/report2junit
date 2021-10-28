@@ -1,0 +1,25 @@
+{
+  "data_from": "template.json",
+  "rules_from": "my-rules.guard",
+  "not_compliant": {
+    "S3_KMS_ENCRYPTION": [
+      {
+        "rule": "S3_KMS_ENCRYPTION",
+        "path": "/Resources/MyBucket/Properties/BucketEncryption/ServerSideEncryptionConfiguration/0/ServerSideEncryptionByDefault/SSEAlgorithm",
+        "provided": "AES256",
+        "expected": "aws:kms",
+        "comparison": {
+          "operator": "Eq",
+          "not_operator_exists": false
+        },
+        "message": "S3 Bucket must use KMS encryption.\nMetadata: []"
+      }
+    ]
+  },
+  "not_applicable": [
+    "S3_FUTURE_CHECK"
+  ],
+  "compliant": [
+    "S3_VERSIONING_ENABLED"
+  ]
+}

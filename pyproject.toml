@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "report2junit"
+version = "0.0.1"
+description = "`report2junit` is a tool that converts various reports into the JUnit format."
+authors = ["Joris Conijn <joris@conijnonline.nl>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+junit-xml = "^1.9"
+click = "^8.0.3"
+
+[tool.poetry.dev-dependencies]
+black = "^21.9b0"
+mypy = "^0.910"
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+toml = "^0.10.2"
+types-toml = "^0.10.1"
+twine = "^3.4.2"
+
+[tool.poetry.scripts]
+report2junit = 'report2junit:main'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
