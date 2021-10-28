@@ -26,6 +26,10 @@ jobs:
         run: make install
       - name: Run check
         run: make test
+      - name: "Upload coverage to Codecov"
+        uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: true
       - name: Code Coverage Summary Report
         uses: irongut/CodeCoverageSummary@v1.1.0
         with:
