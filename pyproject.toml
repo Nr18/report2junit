@@ -9,6 +9,7 @@ license = "MIT"
 python = "^3.8"
 junit-xml = "^1.9"
 click = "^8.0.3"
+build = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.9b0"
