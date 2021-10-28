@@ -1,5 +1,8 @@
 # Report 2 JUnit
 
+[![Continuous Integration](https://github.com/Nr18/report2junit/actions/workflows/ci.yml/badge.svg)](https://github.com/Nr18/report2junit/actions/workflows/ci.yml)
+
+
 `report2junit` is a tool that converts various reports into the JUnit format.
 
 ## Installation
@@ -41,7 +44,6 @@ report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json
 # Or if you want to specify the destination:
 report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json ./sample-reports/cfn-nag-other-destination.xml
 ```
-
 ## Releases
 
 First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file. Then you need to create a
