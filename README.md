@@ -1,8 +1,10 @@
 # Report 2 JUnit
 
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE.md)
+[![Maintenance](https://img.shields.io/badge/Maintained-yes-green.svg)](https://github.com/Nr18/report2junit/graphs/commit-activity)
+[![GitHub release](https://img.shields.io/github/release/Nr18/report2junit.svg)](https://github.com/Nr18/report2junit/releases/)
 [![Continuous Integration](https://github.com/Nr18/report2junit/actions/workflows/ci.yml/badge.svg)](https://github.com/Nr18/report2junit/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/Nr18/report2junit/branch/main/graph/badge.svg?token=RMPJ8DBMKZ)](https://codecov.io/gh/Nr18/report2junit)
-
 
 `report2junit` is a tool that converts various reports into the JUnit format.
 
