@@ -17,6 +17,19 @@ class CfnGuard(ReportFactory):
 
         return self.__raw_source
 
+    @staticmethod
+    def compatible(data: bytes) -> bool:
+        try:
+            source = json.loads(data.decode("utf-8"))
+        except json.JSONDecodeError:
+            return False
+
+        return (
+            "compliant" in source
+            and "not_applicable" in source
+            and "not_compliant" in source
+        )
+
     def convert(self, destination: str) -> None:
         report = JunitReport("cfn-guard findings")
         any(map(report.success, self.raw_source.get("compliant", [])))
