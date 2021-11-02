@@ -1,7 +1,9 @@
 import os.path
+from unittest import mock
 from unittest.mock import mock_open, patch, MagicMock
 from click.testing import CliRunner
 from report2junit import main
+from report2junit.reports import CfnNag
 
 
 def expected_payload(name: str) -> str:
@@ -53,7 +55,8 @@ def test_cfn_guard_conversion_explicit_destination(sample_report_path: str) -> N
     assert result.exit_code == 0
 
 
-def test_cfn_nag_conversion(sample_report_path: str) -> None:
+@mock.patch("report2junit.fetch_report", return_value=CfnNag)
+def test_cfn_nag_conversion(_, sample_report_path: str) -> None:
     runner = CliRunner()
     m = mock_open()
 
@@ -73,7 +76,8 @@ def test_cfn_nag_conversion(sample_report_path: str) -> None:
     assert result.exit_code == 0
 
 
-def test_non_callable(sample_report_path) -> None:
+@mock.patch("report2junit.fetch_report", return_value=None)
+def test_non_callable(_, sample_report_path) -> None:
     runner = CliRunner()
 
     with patch("report2junit.callable", MagicMock(return_value=False)):

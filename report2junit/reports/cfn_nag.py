@@ -17,6 +17,15 @@ class CfnNag(ReportFactory):
 
         return self.__raw_source
 
+    @staticmethod
+    def compatible(data: bytes) -> bool:
+        try:
+            source = json.loads(data.decode("utf-8"))
+        except json.JSONDecodeError:
+            return False
+
+        return "filename" in source[0] and "file_results" in source[0]
+
     def convert(self, destination: str) -> None:
         report = JunitReport("cfn-nag findings")
 

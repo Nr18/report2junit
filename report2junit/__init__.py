@@ -1,20 +1,23 @@
 import os.path
-from typing import Optional, Type
+from typing import Optional
 
 import click
 
-from report2junit.reports import available_reports, ReportFactory
+from report2junit.reports import fetch_report, ReportFactory
 
 
 @click.command()
 @click.option(
+    # DEPRECATED source type is being auto-detected, this option will be removed in a future release.
     "--source-type",
-    type=click.Choice(list(available_reports.keys()), case_sensitive=False),
-    required=True,
+    type=click.Choice(["cfn-guard", "cfn-nag"], case_sensitive=False),
+    required=False,
 )
 @click.argument("source-file")
 @click.argument("destination-file", required=False)
-def main(source_file: str, source_type: str, destination_file: Optional[str]):
+def main(
+    source_file: str, destination_file: Optional[str], source_type: Optional[str] = None
+):
     """
     Convert2JUnit
 
@@ -26,7 +29,7 @@ def main(source_file: str, source_type: str, destination_file: Optional[str]):
         destination_file = os.path.splitext(source_file)[0] + ".xml"
 
     destination_file = os.path.abspath(destination_file)
-    candidate: Optional[Type[ReportFactory]] = available_reports.get(source_type)
+    candidate = fetch_report(source_file)
 
     if not callable(candidate):
         raise click.ClickException("Could not convert the report")
