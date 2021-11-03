@@ -1,27 +1,15 @@
 from __future__ import annotations
 
-import json
-
 from report2junit.reports.report_factory import ReportFactory
 from report2junit.reports.junit import JunitReport
 
 
 class CfnGuard(ReportFactory):
-    __raw_source: dict = {}
+    @classmethod
+    def compatible(cls, data: bytes) -> bool:
+        source = cls._read_data(data)
 
-    @property
-    def raw_source(self) -> dict:
-        if not self.__raw_source:
-            with open(self.source_file) as f:
-                self.__raw_source = json.load(f)
-
-        return self.__raw_source
-
-    @staticmethod
-    def compatible(data: bytes) -> bool:
-        try:
-            source = json.loads(data.decode("utf-8"))
-        except json.JSONDecodeError:
+        if not isinstance(source, dict):
             return False
 
         return (
@@ -35,8 +23,8 @@ class CfnGuard(ReportFactory):
         any(map(report.success, self.raw_source.get("compliant", [])))
         any(map(report.skipped, self.raw_source.get("not_applicable", [])))
 
-        for rule in self.__raw_source.get("not_compliant", []):
-            for check in self.__raw_source["not_compliant"][rule]:
+        for rule in self.raw_source.get("not_compliant", []):
+            for check in self.raw_source["not_compliant"][rule]:
                 message = check["message"].split("\nMetadata")[0]
 
                 report.failure(

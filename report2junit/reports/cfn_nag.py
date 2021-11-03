@@ -1,30 +1,20 @@
 from __future__ import annotations
 
-import json
-
 from report2junit.reports.report_factory import ReportFactory
 from report2junit.reports.junit import JunitReport
 
 
 class CfnNag(ReportFactory):
-    __raw_source: dict = {}
+    @classmethod
+    def compatible(cls, data: bytes) -> bool:
+        source = cls._read_data(data)
 
-    @property
-    def raw_source(self) -> dict:
-        if not self.__raw_source:
-            with open(self.source_file) as f:
-                self.__raw_source = json.load(f)
-
-        return self.__raw_source
-
-    @staticmethod
-    def compatible(data: bytes) -> bool:
-        try:
-            source = json.loads(data.decode("utf-8"))
-        except json.JSONDecodeError:
+        if not isinstance(source, list):
             return False
 
-        return "filename" in source[0] and "file_results" in source[0]
+        entry: dict = next(iter(source), {})
+
+        return "filename" in entry and "file_results" in entry
 
     def convert(self, destination: str) -> None:
         report = JunitReport("cfn-nag findings")

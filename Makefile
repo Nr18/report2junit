@@ -7,7 +7,7 @@ export BASH_ENV=$(VIRTUAL_ENV)/bin/activate
 lint: _black _mypy
 
 test: lint
-	pytest --cov --cov-report term-missing --junitxml=reports/pytest.xml --cov-report xml:reports/coverage.xml
+	pytest --cov --mypy --cov-report term-missing --junitxml=reports/pytest.xml --cov-report xml:reports/coverage.xml
 
 install: $(VIRTUAL_ENV)
 	poetry install

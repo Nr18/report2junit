@@ -9,4 +9,4 @@ def test_no_report(sample_report_path) -> None:
     with patch("report2junit.reports.open", m):
         candidate = fetch_report(f"{sample_report_path}/no-report.json")
 
-    assert candidate is None
+    assert not callable(candidate)
