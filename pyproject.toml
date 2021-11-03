@@ -19,6 +19,8 @@ pytest-mypy = "^0.8.1"
 toml = "^0.10.2"
 types-toml = "^0.10.1"
 twine = "^3.4.2"
+radon = "^5.1.0"
+xenon = "^0.8.0"
 
 [tool.poetry.scripts]
 report2junit = 'report2junit:main'

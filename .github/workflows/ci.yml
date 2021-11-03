@@ -26,7 +26,9 @@ jobs:
         run: make install
       - name: Run check
         run: make test
-      - name: "Upload coverage to Codecov"
+      - name: Run complexity-baseline
+        run: make complexity-baseline
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true
@@ -38,6 +40,6 @@ jobs:
           filename: reports/coverage.xml
           badge: true
           fail_below_min: true
-          format: 'markdown'
-          output: 'both'
-          thresholds: '95 100'
+          format: markdown
+          output: both
+          thresholds: 95 100
