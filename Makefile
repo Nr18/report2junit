@@ -2,7 +2,7 @@ SHELL = /bin/bash -c
 VIRTUAL_ENV = $(shell poetry env info --path)
 export BASH_ENV=$(VIRTUAL_ENV)/bin/activate
 
-.PHONY: lint test install clean run build release tag
+.PHONY: lint test install clean run build release complexity-baseline
 
 lint: _black _mypy
 
@@ -30,6 +30,12 @@ build:
 
 release: build
 	twine upload dist/*
+
+complexity-baseline:
+	$(info Maintenability index)
+	radon mi --min A --max A --show report2junit
+	$(info Cyclomatic complexity index)
+	xenon --max-absolute A --max-modules A --max-average A report2junit
 
 .PHONY: _black _mypy
 
