@@ -22,13 +22,10 @@ def test_cfn_guard_conversion(sample_report_path: str) -> None:
         result = runner.invoke(
             main,
             [
-                "--source-type",
-                "cfn-guard",
                 f"{sample_report_path}/cfn-guard.json",
             ],
         )
-
-    m.assert_called_once_with(f"{sample_report_path}/cfn-guard.xml", "w")
+    m.assert_called_once_with(f"{sample_report_path}/junit.xml", "w")
     handle = m()
     handle.write.assert_called_once_with(expected_payload("cfn-guard.xml"))
     assert result.exit_code == 0
@@ -42,14 +39,12 @@ def test_cfn_guard_conversion_explicit_destination(sample_report_path: str) -> N
         result = runner.invoke(
             main,
             [
-                "--source-type",
-                "cfn-guard",
                 f"{sample_report_path}/cfn-guard.json",
-                f"{sample_report_path}/cfn-guard-specific.xml",
+                f"{sample_report_path}/junit-specific.xml",
             ],
         )
 
-    m.assert_called_once_with(f"{sample_report_path}/cfn-guard-specific.xml", "w")
+    m.assert_called_once_with(f"{sample_report_path}/junit-specific.xml", "w")
     handle = m()
     handle.write.assert_called_once_with(expected_payload("cfn-guard.xml"))
     assert result.exit_code == 0
@@ -70,7 +65,7 @@ def test_cfn_nag_conversion(_, sample_report_path: str) -> None:
             ],
         )
 
-    m.assert_called_once_with(f"{sample_report_path}/cfn-nag.xml", "w")
+    m.assert_called_once_with(f"{sample_report_path}/junit.xml", "w")
     handle = m()
     handle.write.assert_called_once_with(expected_payload("cfn-nag.xml"))
     assert result.exit_code == 0

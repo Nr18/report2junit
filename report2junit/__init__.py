@@ -26,7 +26,7 @@ def main(
     source_file = os.path.abspath(source_file)
 
     if not destination_file:
-        destination_file = os.path.splitext(source_file)[0] + ".xml"
+        destination_file = os.path.join(os.path.dirname(source_file), "junit.xml")
 
     destination_file = os.path.abspath(destination_file)
     candidate = fetch_report(source_file)
