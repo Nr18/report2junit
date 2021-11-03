@@ -16,7 +16,7 @@ repos:
     hooks:
       - id: pytest
         name: Check pytest unit tests pass
-        entry: poetry run pytest --cov
+        entry: poetry run pytest --cov --mypy
         pass_filenames: false
         language: system
         types: [python]
