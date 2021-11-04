@@ -2,35 +2,21 @@ from __future__ import annotations
 
 import json
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Callable, Optional, List
+from junit_xml import TestCase, TestSuite
 
 
 class ReportFactory(ABC):
-    __raw_source: dict = {}
-
-    def __init__(self, source: str):
-        self.source_file = source
-
-    @property
-    def raw_source(self) -> dict:
-        if not self.__raw_source:
-            with open(self.source_file, "rb") as fp:
-                self.__raw_source = self._read_data(fp.read())
-
-        return self.__raw_source
+    def __init__(self, source: bytes):
+        self.source = source
+        self.cases: List[TestCase] = []
 
     @classmethod
-    def _read_data(cls, data: bytes) -> Any:
+    def parse(cls, data: bytes) -> dict:
         try:
             return json.loads(data.decode("utf-8"))
         except json.JSONDecodeError:
             return {}
-
-    @abstractmethod
-    def convert(self, destination: str) -> None:
-        """
-        Convert the current report into a JUnit report and store it at the given destination.
-        """
 
     @classmethod
     @abstractmethod
@@ -38,3 +24,23 @@ class ReportFactory(ABC):
         """
         Returns True if the report can process the given data.
         """
+
+    @abstractmethod
+    def apply(self, callback: Callable[[TestSuite], None]) -> bool:
+        """
+        Apply the current report to the given destination
+        """
+
+    def success(self, name: str, classname: Optional[str] = None):
+        case = TestCase(name, classname=classname)
+        self.cases.append(case)
+
+    def failure(self, name: str, message: str, classname: Optional[str] = None) -> None:
+        case = TestCase(name, classname=classname)
+        case.add_failure_info(output=message)
+        self.cases.append(case)
+
+    def skipped(self, name: str) -> None:
+        case = TestCase(name)
+        case.add_skipped_info("Skipped")
+        self.cases.append(case)

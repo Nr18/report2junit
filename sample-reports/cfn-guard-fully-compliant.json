@@ -1,0 +1,10 @@
+{
+  "data_from": "template.json",
+  "rules_from": "my-rules.guard",
+  "not_compliant": {},
+  "not_applicable": [
+  ],
+  "compliant": [
+    "FULLY_COMPLIANT"
+  ]
+}

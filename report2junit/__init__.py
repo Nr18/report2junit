@@ -1,9 +1,10 @@
-import os.path
 from typing import Optional
-
+import os.path
 import click
 
-from report2junit.reports import fetch_report, ReportFactory
+from report2junit.reports import ReportFactory
+from report2junit.junit import JUnitOutput
+from report2junit.reports import AVAILABLE_REPORTS
 
 
 @click.command()
@@ -26,16 +27,14 @@ def main(
     source_file = os.path.abspath(source_file)
 
     if not destination_file:
-        destination_file = os.path.splitext(source_file)[0] + ".xml"
+        destination_file = os.path.join(os.path.dirname(source_file), "junit.xml")
 
-    destination_file = os.path.abspath(destination_file)
-    candidate = fetch_report(source_file)
+    report = JUnitOutput(destination_file)
 
-    if not callable(candidate):
+    if not report.apply(source_file):
         raise click.ClickException("Could not convert the report")
 
-    report = candidate(source=source_file)
-    report.convert(destination=destination_file)
+    report.write()
 
 
 if __name__ == "__main__":

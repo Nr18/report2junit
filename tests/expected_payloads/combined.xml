@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="2" tests="4" time="0.0">
+	<testsuite disabled="0" errors="0" failures="1" name="cfn-guard findings" skipped="1" tests="3" time="0">
+		<testcase name="S3_VERSIONING_ENABLED"/>
+		<testcase name="S3_FUTURE_CHECK">
+			<skipped type="skipped" message="Skipped"/>
+		</testcase>
+		<testcase name="S3_KMS_ENCRYPTION" classname="/Resources/MyBucket/Properties/BucketEncryption/ServerSideEncryptionConfiguration/0/ServerSideEncryptionByDefault/SSEAlgorithm">
+			<failure type="failure">Expected: aws:kms Received: AES256.
+S3 Bucket must use KMS encryption.</failure>
+		</testcase>
+	</testsuite>
+	<testsuite disabled="0" errors="0" failures="1" name="cfn-nag findings" skipped="0" tests="1" time="0">
+		<testcase name="W1 - S3 Bucket should have access logging configured" classname="MyBucket">
+			<failure type="failure">template.json#L125</failure>
+		</testcase>
+	</testsuite>
+</testsuites>

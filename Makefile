@@ -6,7 +6,7 @@ export BASH_ENV=$(VIRTUAL_ENV)/bin/activate
 
 lint: _black _mypy
 
-test: lint
+test: lint complexity-baseline
 	pytest --cov --mypy --cov-report term-missing --junitxml=reports/pytest.xml --cov-report xml:reports/coverage.xml
 
 install: $(VIRTUAL_ENV)
