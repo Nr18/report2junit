@@ -14,25 +14,28 @@ from report2junit.reports import AVAILABLE_REPORTS
     type=click.Choice(["cfn-guard", "cfn-nag"], case_sensitive=False),
     required=False,
 )
-@click.argument("source-file")
-@click.argument("destination-file", required=False)
+@click.argument("source-files", nargs=-1)
+@click.option("--destination-file", required=False)
 def main(
-    source_file: str, destination_file: Optional[str], source_type: Optional[str] = None
+    source_files: str,
+    destination_file: Optional[str],
+    source_type: Optional[str] = None,
 ):
     """
     Convert2JUnit
 
     This tool allows you to convert various reports into the JUnit format.
     """
-    source_file = os.path.abspath(source_file)
-
     if not destination_file:
-        destination_file = os.path.join(os.path.dirname(source_file), "junit.xml")
+        destination_file = os.path.join(os.path.dirname(source_files[0]), "junit.xml")
 
     report = JUnitOutput(destination_file)
 
-    if not report.apply(source_file):
-        raise click.ClickException("Could not convert the report")
+    for source_file in source_files:
+        source_file = os.path.abspath(source_file)
+
+        if not report.apply(source_file):
+            raise click.ClickException("Could not convert the report")
 
     report.write()
 

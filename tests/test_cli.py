@@ -15,7 +15,7 @@ from tests import expected_payload
         "cfn-guard-skipped-only.json",
     ],
 )
-def test_report_conversion(input_file: str, sample_reports_path: str) -> None:
+def test_single_report_conversion(input_file: str, sample_reports_path: str) -> None:
     runner = CliRunner()
     m = mock_open()
 
@@ -44,6 +44,7 @@ def test_cfn_guard_conversion_explicit_destination(sample_reports_path: str) -> 
             main,
             [
                 f"{sample_reports_path}/cfn-guard.json",
+                "--destination-file",
                 f"{sample_reports_path}/cfn-guard-specific.xml",
             ],
         )
