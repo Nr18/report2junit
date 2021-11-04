@@ -35,15 +35,25 @@ the following command(s):
 report2junit ./sample-reports/cfn-guard.json
 
 # Or if you want to specify the destination:
-report2junit ./sample-reports/cfn-guard.json ./sample-reports/cfn-guard-other-destination.xml
+report2junit ./sample-reports/cfn-guard.json --destination-file ./sample-reports/cfn-guard-other-destination.xml
 ```
 
 Convert an output report from [cfn-nag](https://github.com/stelligent/cfn_nag) using
 the following command(s):
 
 ```bash
-report2juni ./sample-reports/cfn-nag.json
+report2junit ./sample-reports/cfn-nag.json
 
 # Or if you want to specify the destination:
-report2junit ./sample-reports/cfn-nag.json ./sample-reports/cfn-nag-other-destination.xml
+report2junit ./sample-reports/cfn-nag.json --destination-file ./sample-reports/cfn-nag-other-destination.xml
+```
+
+Combine both the [cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard) and [cfn-nag](https://github.com/stelligent/cfn_nag)
+reports into a single output report.
+
+```bash
+report2junit ./sample-reports/cfn-nag.json ./sample-reports/cfn-guard.json
+
+# Or if you want to specify the destination:
+report2junit ./sample-reports/cfn-nag.json ./sample-reports/cfn-guard.json --destination-file ./sample-reports/junit-other.xml
 ```
