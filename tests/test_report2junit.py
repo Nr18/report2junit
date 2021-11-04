@@ -1,89 +1,56 @@
-import os.path
-from unittest import mock
 from unittest.mock import mock_open, patch, MagicMock
-from click.testing import CliRunner
-from report2junit import main
-from report2junit.reports import CfnNag
+
+import pytest
+from report2junit.junit import JUnitOutput
+from report2junit.reports import NoReport
+from tests import expected_payload, expected_payload_bytes
 
 
-def expected_payload(name: str) -> str:
-    path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "expected_payloads", name)
-    )
-    with open(path) as fp:
-        return fp.read()
+def test_no_reports(sample_reports_path: str) -> None:
+    report = JUnitOutput(f"{sample_reports_path}/junit.xml")
+
+    with pytest.raises(Exception) as exception:
+        report.write()
+
+    assert "No reports found to write" in str(exception)
 
 
-def test_cfn_guard_conversion(sample_report_path: str) -> None:
-    runner = CliRunner()
-    m = mock_open()
+def test_junit_output_non_existing(sample_reports_path) -> None:
+    with patch("os.path.isfile", MagicMock(return_value=False)):
+        report = JUnitOutput(f"{sample_reports_path}/junit.xml")
 
-    with patch("report2junit.reports.junit.open", m):
-        result = runner.invoke(
-            main,
-            [
-                f"{sample_report_path}/cfn-guard.json",
-            ],
-        )
-    m.assert_called_once_with(f"{sample_report_path}/junit.xml", "w")
-    handle = m()
-    handle.write.assert_called_once_with(expected_payload("cfn-guard.xml"))
-    assert result.exit_code == 0
+    report.apply(f"{sample_reports_path}/cfn-nag.json")
+    destination_report = mock_open()
+
+    with patch("report2junit.junit.open", destination_report):
+        report.write()
+
+    destination_report.assert_called_with(f"{sample_reports_path}/junit.xml", "w")
+    destination_report().write.assert_called_once_with(expected_payload("cfn-nag.xml"))
 
 
-def test_cfn_guard_conversion_explicit_destination(sample_report_path: str) -> None:
-    runner = CliRunner()
-    m = mock_open()
+def test_junit_output_merge_existing(sample_reports_path) -> None:
+    existing_report = mock_open(read_data=expected_payload_bytes("cfn-guard.xml"))
 
-    with patch("report2junit.reports.junit.open", m):
-        result = runner.invoke(
-            main,
-            [
-                f"{sample_report_path}/cfn-guard.json",
-                f"{sample_report_path}/junit-specific.xml",
-            ],
-        )
+    with patch("report2junit.reports.open", existing_report):
+        with patch("report2junit.reports.isfile", MagicMock(return_value=True)):
+            report = JUnitOutput(f"{sample_reports_path}/junit.xml")
 
-    m.assert_called_once_with(f"{sample_report_path}/junit-specific.xml", "w")
-    handle = m()
-    handle.write.assert_called_once_with(expected_payload("cfn-guard.xml"))
-    assert result.exit_code == 0
+    report.apply(f"{sample_reports_path}/cfn-nag.json")
+
+    destination_report = mock_open()
+    with patch("report2junit.junit.open", destination_report):
+        report.write()
+
+    destination_report.assert_called_with(f"{sample_reports_path}/junit.xml", "w")
+    destination_report().write.assert_called_once_with(expected_payload("combined.xml"))
 
 
-@mock.patch("report2junit.fetch_report", return_value=CfnNag)
-def test_cfn_nag_conversion(_, sample_report_path: str) -> None:
-    runner = CliRunner()
-    m = mock_open()
-
-    with patch("report2junit.reports.junit.open", m):
-        result = runner.invoke(
-            main,
-            [
-                "--source-type",
-                "cfn-nag",
-                f"{sample_report_path}/cfn-nag.json",
-            ],
-        )
-
-    m.assert_called_once_with(f"{sample_report_path}/junit.xml", "w")
-    handle = m()
-    handle.write.assert_called_once_with(expected_payload("cfn-nag.xml"))
-    assert result.exit_code == 0
+def test_no_report_compatibility() -> None:
+    assert NoReport.compatible(b"") is True
 
 
-@mock.patch("report2junit.fetch_report", return_value=None)
-def test_non_callable(_, sample_report_path) -> None:
-    runner = CliRunner()
-
-    with patch("report2junit.callable", MagicMock(return_value=False)):
-        result = runner.invoke(
-            main,
-            [
-                "--source-type",
-                "cfn-nag",
-                f"{sample_report_path}/cfn-nag.json",
-            ],
-        )
-    assert result.exception
-    assert result.exit_code == 1
-    assert "Could not convert the report" in result.output
+def test_no_report_parse() -> None:
+    assert NoReport.parse(b"") == {}
+    assert NoReport.parse(b"Some test") == {}
+    assert NoReport.parse(b"<xml></xml>") == {}

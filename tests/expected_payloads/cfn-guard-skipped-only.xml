@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<testsuites disabled="0" errors="0" failures="0" tests="1" time="0.0">
+	<testsuite disabled="0" errors="0" failures="0" name="cfn-guard findings" skipped="1" tests="1" time="0">
+		<testcase name="MY_SKIPPED_FINDING">
+			<skipped type="skipped" message="Skipped"/>
+		</testcase>
+	</testsuite>
+</testsuites>
