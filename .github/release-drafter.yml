@@ -9,20 +9,15 @@ template: |
 
 categories:
   - title: '⚠️ Breaking'
-    label:
-      - 'breaking'
+    label: 'breaking'
   - title: '🚀 Features'
-    label:
-      - 'feature'
+    label: 'feature'
   - title: '🐛 Bug Fixes'
-    label:
-      - 'bug'
+    label: 'bug'
   - title: '🧰 Maintenance'
-    label:
-      - 'maintenance'
+    label: 'maintenance'
   - title: '📚 Documentation'
-    label:
-      - 'documentation'
+    label: 'documentation'
 
 version-resolver:
   major:
