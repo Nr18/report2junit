@@ -14,9 +14,7 @@ categories:
   - title: '🧰 Maintenance'
     label: 'type: maintenance'
   - title: '📚 Documentation'
-    label: 'type: docs'
-  - title: 'Dependency Updates'
-    label: 'type: dependencies'
+    label: 'type: documentation'
 
 version-resolver:
   major:
@@ -29,23 +27,25 @@ version-resolver:
     labels:
       - 'type: bug'
       - 'type: maintenance'
-      - 'type: docs'
-      - 'type: dependencies'
-      - 'type: security'
+      - 'type: documentation'
 
 autolabeler:
-  - label: 'chore'
-    files:
-      - '*.md'
-    branch:
-      - '/docs\/.+/'
-      - '/chore\/.+/'
-  - label: 'bug'
-    branch:
-      - '/fix\/.+/'
   - label: 'feature'
-    branch:
-      - '/feat\/.+/'
+    title:
+      - '/feat:/i'
+  - label: 'documentation'
+    title:
+      - '/docs:/i'
+  - label: 'bug'
+    title:
+      - '/fix:/i'
+  - label: 'maintenance'
+    title:
+      - '/chore:/i'
+      - '/refactor:/i'
+      - '/style:/i'
+      - '/test:/i'
+      - '/perf:/i'
 
 exclude-labels:
   - 'skip-changelog'
