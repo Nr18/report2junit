@@ -4,34 +4,43 @@ template: |
   # What's Changed
 
   $CHANGES
+
+  **See changes**: https://github.com/Nr18/report2junit/compare/v$RESOLVED_VERSION...$PREVIOUS_TAG
+
 categories:
   - title: '⚠️ Breaking'
-    label: 'type: breaking'
+    label:
+      - 'breaking'
   - title: '🚀 Features'
-    label: 'type: feature'
+    label:
+      - 'feature'
   - title: '🐛 Bug Fixes'
-    label: 'type: bug'
+    label:
+      - 'bug'
   - title: '🧰 Maintenance'
-    label: 'type: maintenance'
+    label:
+      - 'maintenance'
   - title: '📚 Documentation'
-    label: 'type: docs'
+    label:
+      - 'docs'
   - title: 'Dependency Updates'
-    label: 'type: dependencies'
+    label:
+      - 'dependencies'
 
 version-resolver:
   major:
     labels:
-      - 'type: breaking'
+      - 'breaking'
   minor:
     labels:
-      - 'type: feature'
+      - 'feature'
   patch:
     labels:
-      - 'type: bug'
-      - 'type: maintenance'
-      - 'type: docs'
-      - 'type: dependencies'
-      - 'type: security'
+      - 'bug'
+      - 'maintenance'
+      - 'docs'
+      - 'dependencies'
+      - 'security'
 
 autolabeler:
   - label: 'chore'
