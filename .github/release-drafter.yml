@@ -5,7 +5,7 @@ template: |
 
   $CHANGES
 
-  **See changes**: https://github.com/Nr18/report2junit/compare/v$RESOLVED_VERSION...$PREVIOUS_TAG
+  **See changes**: https://github.com/Nr18/report2junit/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
 categories:
   - title: '⚠️ Breaking'
