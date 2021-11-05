@@ -8,18 +8,11 @@ from report2junit.reports import AVAILABLE_REPORTS
 
 
 @click.command()
-@click.option(
-    # DEPRECATED source type is being auto-detected, this option will be removed in a future release.
-    "--source-type",
-    type=click.Choice(["cfn-guard", "cfn-nag"], case_sensitive=False),
-    required=False,
-)
 @click.argument("source-files", nargs=-1)
 @click.option("--destination-file", required=False)
 def main(
     source_files: str,
     destination_file: Optional[str],
-    source_type: Optional[str] = None,
 ):
     """
     Convert2JUnit
