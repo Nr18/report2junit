@@ -113,6 +113,68 @@ reports:
       - combined-junit-report.xml
 ```
 
+#### Using CDK CodePipeline
+
+When you want to use the pipelines functionality from CDK you can use the following sample to implement [report2junit][report2junit]
+into that pipeline.
+
+```python
+from aws_cdk import (
+    core as cdk,
+    aws_codebuild as codebuild,
+    aws_codecommit as codecommit,
+    pipelines as pipelines,
+)
+from pipeline_stage import PipelineStage
+
+default_synth_spec = {
+    "version": "0.2",
+    "reports": {
+        "Conpliance": {
+            "base-directory": "./reports",
+            "file-format": "JUNITXML",
+            "files": [
+                "combined-junit-report.xml",
+            ],
+        },
+    },
+}
+
+
+class PipelineStack(cdk.Stack):
+
+    def __init__(self, scope: cdk.Construct, id: str, **kwargs) -> None:
+        super().__init__(scope, id, **kwargs)
+
+        repository = codecommit.Repository(self, "MyRepo", repository_name="MyRepo")
+
+        pipelines.CodePipeline(
+            self,
+            "Pipeline",
+            self_mutation=True,
+            synth_code_build_defaults=pipelines.CodeBuildOptions(
+                partial_build_spec=codebuild.BuildSpec.from_object(default_synth_spec),
+            ),
+            synth=pipelines.ShellStep(
+                "Build",
+                input=pipelines.CodePipelineSource.code_commit(repository, "main"),
+                install_commands=[
+                    "pip install -r requirements.txt",
+                    "npm install -g aws-cdk",
+                    "curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/aws-cloudformation/cloudformation-guard/main/install-guard.sh | sh && ",
+                    "mkdir -p /codebuild/user/bin/",
+                    "ln -s ~/.guard/bin/cfn-guard /codebuild/user/bin/cfn-guard"
+                ],
+                commands=[
+                    "mkdir reports",
+                    "cdk synth > template.yml",
+                    "cfn-guard validate --rules cfn-rules.guard --data template.yml --output-format json --show-summary none > reports/cfn-guard.json || true",
+                    "report2junit reports/cfn-guard.json",
+                ],
+            ),
+        )
+```
+
 [cloudformation-guard]: https://github.com/aws-cloudformation/cloudformation-guard "AWS CloudFormation Guard"
 [cfn-nag]: https://github.com/stelligent/cfn_nag "Stelligen cfn_nag"
 [report2junit]: https://github.com/Nr18/report2junit "Report2JUnit"
