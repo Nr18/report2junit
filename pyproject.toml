@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "report2junit"
-version = "0.1.0"
+version = "0.2.0"
 description = "`report2junit` is a tool that converts various reports into the JUnit format."
 authors = ["Joris Conijn <joris@conijnonline.nl>"]
 license = "MIT"
