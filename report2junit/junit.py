@@ -28,15 +28,13 @@ class JUnitOutput:
         self.__reports.append(report)
 
     def has_failures(self) -> bool:
+        def report_has_failures(report: TestSuite) -> bool:
+            return any(map(case_has_failures, report.test_cases))
+
         def case_has_failures(case: TestCase) -> bool:
             return len(case.failures) > 0
 
-        results: List[bool] = []
-
-        for report in self.__reports:
-            results.extend(map(case_has_failures, report.test_cases))
-
-        return any(results)
+        return any(map(report_has_failures, self.__reports))
 
     def write(self) -> None:
         if len(self.__reports) == 0:
