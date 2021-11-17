@@ -26,10 +26,9 @@ The following syntax can be used to convert a report:
 report2junit <SOURCE_LOCATION>
 ```
 
-### Examples
+### CLI Examples
 
-Convert an output report from [cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard) using
-the following command(s):
+Convert an output report from [cloudformation-guard][cloudformation-guard] using the following command(s):
 
 ```bash
 report2junit ./sample-reports/cfn-guard.json
@@ -38,8 +37,7 @@ report2junit ./sample-reports/cfn-guard.json
 report2junit ./sample-reports/cfn-guard.json --destination-file ./sample-reports/cfn-guard-other-destination.xml
 ```
 
-Convert an output report from [cfn-nag](https://github.com/stelligent/cfn_nag) using
-the following command(s):
+Convert an output report from [cfn-nag][cfn-nag] using the following command(s):
 
 ```bash
 report2junit ./sample-reports/cfn-nag.json
@@ -48,8 +46,7 @@ report2junit ./sample-reports/cfn-nag.json
 report2junit ./sample-reports/cfn-nag.json --destination-file ./sample-reports/cfn-nag-other-destination.xml
 ```
 
-Combine both the [cloudformation-guard](https://github.com/aws-cloudformation/cloudformation-guard) and [cfn-nag](https://github.com/stelligent/cfn_nag)
-reports into a single output report.
+Combine both the [cloudformation-guard][cloudformation-guard] and [cfn-nag][cfn-nag] reports into a single output report.
 
 ```bash
 report2junit ./sample-reports/cfn-nag.json ./sample-reports/cfn-guard.json
@@ -71,3 +68,51 @@ echo $?
 report2junit ./sample-reports/cfn-guard.json --ignore-failures
 echo $?
 ```
+
+### AWS CodeBuild Examples
+
+One of the reasons for writing this tool to use it in combination with AWS CodeBuild. In this section you will find a
+few examples in how you could use it.
+
+#### Native buildspec.yml
+
+After you synthesized your template, or you use a CloudFormation native template. You can scan it using [cloudformation-guard][cloudformation-guard]
+or [cfn-nag][cfn-nag] to scan the template. The outcome of those tools are not compatible with the reporting tools from
+AWS CodeBuild. So we will use [report2junit][report2junit] to convert the 2 results into a single, combined compatible
+report.
+
+```yaml
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.8
+    commands:
+      - pip install -Ur requirements.txt
+      - mkdir -p reports
+  build:
+    commands:
+      # Generate the template or use the already existing template.
+      - cdk synth > template.yml
+      # Use cfn_nag and cfn-guard to scan the generated template
+      - cfn_nag_scan --fail-on-warnings --input-path template.yml -o json > reports/cfn-nag.json || true
+      - cfn-guard validate --rules cfn-rules.guard --data template.yml --output-format json --show-summary none > reports/cfn-guard.json || true
+  post_build:
+    commands:
+      - report2junit reports/cfn-guard.json reports/cfn-nag.json --destination-file ./reports/combined-junit-report.xml
+
+artifacts:
+  files: '**/*'
+
+reports:
+  Conpliance:
+    base-directory: ./reports
+    file-format: JUNITXML
+    files:
+      - combined-junit-report.xml
+```
+
+[cloudformation-guard]: https://github.com/aws-cloudformation/cloudformation-guard "AWS CloudFormation Guard"
+[cfn-nag]: https://github.com/stelligent/cfn_nag "Stelligen cfn_nag"
+[report2junit]: https://github.com/Nr18/report2junit "Report2JUnit"
