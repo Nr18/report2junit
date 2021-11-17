@@ -2,12 +2,15 @@ from __future__ import annotations
 
 
 from typing import List
-from junit_xml import to_xml_report_string, TestSuite
+from junit_xml import to_xml_report_string, TestSuite, TestCase
 
 from report2junit.reports import Report
 
 
 class JUnitOutput:
+    __destination: str
+    __reports: List[TestSuite]
+
     def __init__(self, destination: str):
         self.__destination = destination
         self.__reports = self.__load_existing()
@@ -23,6 +26,17 @@ class JUnitOutput:
 
     def add_test_suite(self, report: TestSuite) -> None:
         self.__reports.append(report)
+
+    def has_failures(self) -> bool:
+        def case_has_failures(case: TestCase) -> bool:
+            return len(case.failures) > 0
+
+        results: List[bool] = []
+
+        for report in self.__reports:
+            results.extend(map(case_has_failures, report.test_cases))
+
+        return any(results)
 
     def write(self) -> None:
         if len(self.__reports) == 0:

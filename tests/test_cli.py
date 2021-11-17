@@ -7,15 +7,24 @@ from tests import expected_payload
 
 
 @pytest.mark.parametrize(
-    "input_file",
+    "fail_on_failures, input_file, expected_exit_code",
     [
-        "cfn-guard.json",
-        "cfn-guard-fully-compliant.json",
-        "cfn-nag.json",
-        "cfn-guard-skipped-only.json",
+        (False, "cfn-guard.json", 0),
+        (True, "cfn-guard.json", 1),
+        (False, "cfn-guard-fully-compliant.json", 0),
+        (True, "cfn-guard-fully-compliant.json", 0),
+        (False, "cfn-nag.json", 0),
+        (True, "cfn-nag.json", 1),
+        (False, "cfn-guard-skipped-only.json", 0),
+        (True, "cfn-guard-skipped-only.json", 0),
     ],
 )
-def test_single_report_conversion(input_file: str, sample_reports_path: str) -> None:
+def test_single_report_conversion(
+    fail_on_failures: bool,
+    input_file: str,
+    expected_exit_code: int,
+    sample_reports_path: str,
+) -> None:
     runner = CliRunner()
     m = mock_open()
 
@@ -23,6 +32,7 @@ def test_single_report_conversion(input_file: str, sample_reports_path: str) -> 
         result = runner.invoke(
             main,
             [
+                "--fail-on-failures" if fail_on_failures else "--ignore-failures",
                 f"{sample_reports_path}/{input_file}",
             ],
         )
@@ -32,7 +42,7 @@ def test_single_report_conversion(input_file: str, sample_reports_path: str) -> 
     handle.write.assert_called_once_with(
         expected_payload(input_file.replace(".json", ".xml"))
     )
-    assert result.exit_code == 0
+    assert result.exit_code == expected_exit_code
 
 
 def test_cfn_guard_conversion_explicit_destination(sample_reports_path: str) -> None:
@@ -43,6 +53,7 @@ def test_cfn_guard_conversion_explicit_destination(sample_reports_path: str) -> 
         result = runner.invoke(
             main,
             [
+                "--ignore-failures",
                 f"{sample_reports_path}/cfn-guard.json",
                 "--destination-file",
                 f"{sample_reports_path}/cfn-guard-specific.xml",
