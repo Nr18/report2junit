@@ -57,3 +57,17 @@ report2junit ./sample-reports/cfn-nag.json ./sample-reports/cfn-guard.json
 # Or if you want to specify the destination:
 report2junit ./sample-reports/cfn-nag.json ./sample-reports/cfn-guard.json --destination-file ./sample-reports/junit-other.xml
 ```
+
+In some cases it is useful to explicitly stop when there are failures. For example when you want to enforce that there
+are no failures. Or on the other hand we could continue when there are failures. This behaviour can be influenced using
+the `--ignore-failures` and `--fail-on-failures` options. Where `--fail-on-failures` is the default.
+
+```bash
+# Convert the given report and when there are failures exit code 1 is returned.
+report2junit ./sample-reports/cfn-guard.json --fail-on-failures
+echo $?
+
+# Convert the given report and when there are failures exit code 0 is returned.
+report2junit ./sample-reports/cfn-guard.json --ignore-failures
+echo $?
+```

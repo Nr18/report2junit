@@ -22,8 +22,7 @@ clean:
 	[[ -f .coverage ]] && rm .coverage || true
 
 run:
-	report2junit --source-type cfn-guard ./sample-reports/cfn-guard.json
-	report2junit --source-type cfn-nag ./sample-reports/cfn-nag.json
+	report2junit --ignore-failures ./sample-reports/cfn-guard.json ./sample-reports/cfn-nag.json
 
 build:
 	python setup.py sdist
