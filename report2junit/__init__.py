@@ -13,7 +13,7 @@ from report2junit.reports import AVAILABLE_REPORTS
 @click.option("--fail-on-failures/--ignore-failures", default=True)
 def main(
     source_files: List[str], destination_file: Optional[str], fail_on_failures: bool
-):
+) -> None:
     """
     Convert2JUnit
 
@@ -29,7 +29,7 @@ def main(
         )
 
 
-def apply_source_files(report: JUnitOutput, source_files: List[str]):
+def apply_source_files(report: JUnitOutput, source_files: List[str]) -> None:
     for source_file in source_files:
         source_file = os.path.abspath(source_file)
 
