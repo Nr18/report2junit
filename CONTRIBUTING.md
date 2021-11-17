@@ -19,6 +19,8 @@ reported the issue. Please try to include as much information as you can.
 First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file. Next you need to merge the
 change to the `main` branch using a pull request.
 
+Lookup the generated release notes, they are listed as draft. Copy them to a temporary file for later use.
+
 Then you need to create a new release. You can do this by creating a tag and push it to the remote:
 
  ```bash
@@ -26,4 +28,9 @@ Then you need to create a new release. You can do this by creating a tag and pus
  git push --tags
  ```
 
- This will trigger the GitHub Actions [`release`](.github/workflows/release.yml) workflow.
+This will trigger the GitHub Actions [`release`](.github/workflows/release.yml) workflow.
+
+Create a pull request from `develop` to `main` and merge it. Go to the releases section on GitHub and update the new
+release with the previously stored release notes.
+
+All done!
