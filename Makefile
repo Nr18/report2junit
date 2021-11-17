@@ -33,7 +33,7 @@ release: build
 
 complexity-baseline:
 	$(info Maintenability index)
-	radon mi --min A --max A --show report2junit
+	radon mi --min A --max A --show --sort report2junit
 	$(info Cyclomatic complexity index)
 	xenon --max-absolute A --max-modules A --max-average A report2junit
 
