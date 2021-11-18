@@ -16,19 +16,10 @@ reported the issue. Please try to include as much information as you can.
 
 ## Releases
 
-First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file. Next you need to merge the
-change to the `main` branch using a pull request.
+First you will need to update the `version` in the [`pyproject.toml`](./pyproject.toml) file.
+Next you need to merge these changes into the `develop` branch using a pull request.
 
-Then you need to create a new release. You can do this by creating a tag and push it to the remote:
-
- ```bash
- git tag v$(awk '/version/{print $NF}'  pyproject.toml | sed 's/\"//g')
- git push --tags
- ```
-
-This will trigger the GitHub Actions [`release`](.github/workflows/release.yml) workflow. When the release process is
-done. You need to create a pull request from `develop` to `main` and merge it.
-
-Then you need to the releases section on GitHub and publish the new release.
+You need to create a pull request from `develop` to `main` and merge it. This will trigger the GitHub Actions [`release`](.github/workflows/release.yml)
+workflow.
 
 All done!
