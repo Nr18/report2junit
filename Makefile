@@ -2,11 +2,11 @@ SHELL = /bin/bash -c
 VIRTUAL_ENV = $(shell poetry env info --path)
 export BASH_ENV=$(VIRTUAL_ENV)/bin/activate
 
-.PHONY: lint test install clean run build release complexity-baseline
+.PHONY: lint test install clean run build release complexity
 
 lint: _black _mypy
 
-test: lint complexity-baseline
+test: lint complexity
 	pytest --cov --mypy --cov-report term-missing --junitxml=reports/pytest.xml --cov-report xml:reports/coverage.xml
 
 install: $(VIRTUAL_ENV)
@@ -30,7 +30,7 @@ build:
 release: build
 	twine upload dist/*
 
-complexity-baseline:
+complexity:
 	$(info Maintenability index)
 	radon mi --min A --max A --show --sort report2junit
 	$(info Cyclomatic complexity index)
