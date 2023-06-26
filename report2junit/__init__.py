@@ -2,9 +2,11 @@ from typing import Optional, List
 import os.path
 import click
 
-from report2junit.reports import ReportFactory
 from report2junit.junit import JUnitOutput
 from report2junit.reports import AVAILABLE_REPORTS
+
+
+__version__ = "0.3.0"
 
 
 @click.command()
