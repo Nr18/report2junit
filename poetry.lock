@@ -828,23 +828,27 @@ testing = ["fields", "hunter", "process-tests", "pytest-xdist", "six", "virtuale
 
 [[package]]
 name = "pytest-mypy"
-version = "0.8.1"
+version = "0.10.3"
 description = "Mypy static type checker plugin for Pytest"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.6"
 files = [
-    {file = "pytest-mypy-0.8.1.tar.gz", hash = "sha256:1fa55723a4bf1d054fcba1c3bd694215a2a65cc95ab10164f5808afd893f3b11"},
-    {file = "pytest_mypy-0.8.1-py3-none-any.whl", hash = "sha256:6e68e8eb7ceeb7d1c83a1590912f784879f037b51adfb9c17b95c6b2fc57466b"},
+    {file = "pytest-mypy-0.10.3.tar.gz", hash = "sha256:f8458f642323f13a2ca3e2e61509f7767966b527b4d8adccd5032c3e7b4fd3db"},
+    {file = "pytest_mypy-0.10.3-py3-none-any.whl", hash = "sha256:7638d0d3906848fc1810cb2f5cc7fceb4cc5c98524aafcac58f28620e3102053"},
 ]
 
 [package.dependencies]
 attrs = ">=19.0"
 filelock = ">=3.0"
 mypy = [
+    {version = ">=0.900", markers = "python_version >= \"3.11\""},
+    {version = ">=0.780", markers = "python_version >= \"3.9\" and python_version < \"3.11\""},
     {version = ">=0.700", markers = "python_version >= \"3.8\" and python_version < \"3.9\""},
-    {version = ">=0.780", markers = "python_version >= \"3.9\""},
 ]
-pytest = ">=3.5"
+pytest = [
+    {version = ">=6.2", markers = "python_version >= \"3.10\""},
+    {version = ">=4.6", markers = "python_version >= \"3.6\" and python_version < \"3.10\""},
+]
 
 [[package]]
 name = "pywin32-ctypes"
@@ -1151,4 +1155,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "c74713d2894297779233634e25a6f25194528741b2f758076583e2e18c7a9971"
+content-hash = "95ce2f81c5be1811a9d3ddfb8fd550e7bd0ccffd1750e7bbbdee8e61d9b274ff"
