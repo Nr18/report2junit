@@ -9,7 +9,7 @@ from report2junit.reports import AVAILABLE_REPORTS
 __version__ = "0.3.1"
 
 
-@click.command()
+@click.command()  # type: ignore
 @click.argument("source-files", nargs=-1)
 @click.option("--destination-file", required=False)
 @click.option("--fail-on-failures/--ignore-failures", default=True)
@@ -46,7 +46,3 @@ def initialize_report(
         destination_file = os.path.join(os.path.dirname(source_files[0]), "junit.xml")
 
     return JUnitOutput(destination_file)
-
-
-if __name__ == "__main__":
-    main()
